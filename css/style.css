@@ -1,0 +1,216 @@
+/* =========================================================
+   PIN Trainer — gaya dasar (dipakai semua mode)
+   Warna dasar: merah. Minimalis.
+   ========================================================= */
+
+:root {
+  --red: #d32f2f;
+  --red-dark: #b71c1c;
+  --red-soft: #fdecea;
+
+  --bg: #ffffff;
+  --surface: #f7f7f7;
+  --text: #1c1c1c;
+  --muted: #767676;
+  --line: #e5e5e5;
+
+  --radius: 14px;
+  --gap: clamp(6px, 1.8vw, 12px);
+  --slot: clamp(34px, 11vw, 52px);
+
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --red-soft: #2b1717;
+    --bg: #151515;
+    --surface: #1e1e1e;
+    --text: #f1f1f1;
+    --muted: #9b9b9b;
+    --line: #2d2d2d;
+  }
+}
+
+[hidden] { display: none !important; }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.4;
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: calc(10px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left));
+  background: var(--red);
+  color: #fff;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+.link-btn {
+  font: inherit;
+  font-size: .8rem;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, .55);
+  border-radius: 999px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.link-btn:hover { background: rgba(255, 255, 255, .14); }
+.link-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* ---------- Layout utama ---------- */
+.app {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Riwayat ---------- */
+.history {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 12px 16px 4px;
+  scrollbar-width: thin;
+}
+
+/* margin-top:auto => item sedikit menempel di bawah (dekat angka), item banyak bisa di-scroll */
+.history ol,
+.history-empty { margin: auto 0 0; }
+
+.history ol {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+#historyList:empty { display: none; }
+
+.history-empty {
+  text-align: center;
+  color: var(--muted);
+  font-size: .9rem;
+  padding: 8px 0;
+}
+
+.hist-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+
+.hist-pin {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 1.05rem;
+  white-space: pre;
+}
+
+.hist-ago { color: var(--muted); font-size: .85rem; }
+
+.hist-dur {
+  margin-left: auto;
+  color: var(--red);
+  font-weight: 600;
+  font-size: .85rem;
+  font-family: var(--mono);
+}
+
+.hist-item.is-new { animation: flash .7s ease-out; }
+@keyframes flash {
+  from { background: var(--red-soft); }
+  to   { background: transparent; }
+}
+
+/* ---------- PIN yang sedang diketik + timer ---------- */
+.display {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px 14px;
+}
+
+.slots { display: flex; gap: clamp(5px, 1.6vw, 10px); }
+
+.slot {
+  width: var(--slot);
+  aspect-ratio: 1 / 1.15;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: calc(var(--slot) * .52);
+  line-height: 1;
+  transition: border-color .08s, color .08s;
+}
+.slot.is-filled { border-color: var(--red); color: var(--red); }
+
+.timer {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  color: var(--muted);
+}
+.timer-value {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 8vw, 2.6rem);
+  line-height: 1.1;
+  min-width: 6ch;
+  text-align: right;
+}
+.timer-unit { font-size: .9rem; }
+
+.timer.is-running .timer-value { color: var(--red); }
+.timer.is-done .timer-value    { color: var(--text); }
+
+/* ---------- Pad: tersembunyi secara default, ditampilkan per mode ---------- */
+.pad {
+  display: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.hint { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

@@ -1,0 +1,83 @@
+/* =========================================================
+   Mode DESKTOP — laptop / PC (input dari keyboard fisik)
+   Hanya menampilkan deretan angka: 1 2 3 4 5 6 7 8 9 0
+   ========================================================= */
+
+[data-mode="desktop"] .app {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 24px 32px;
+  gap: 20px;
+  justify-content: center;
+}
+
+[data-mode="desktop"] .history {
+  flex: 0 0 auto;
+  height: clamp(150px, 30dvh, 260px);
+  padding: 12px 18px 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+[data-mode="desktop"] .display {
+  --slot: 56px;
+  padding: 0;
+  gap: 12px;
+}
+
+[data-mode="desktop"] .slot { background: var(--bg); }
+
+[data-mode="desktop"] .timer-value { font-size: 2.8rem; }
+
+/* ---------- Deretan angka ala keyboard ---------- */
+[data-mode="desktop"] .pad--desktop {
+  display: flex;
+  justify-content: center;
+  gap: clamp(6px, 1vw, 12px);
+  padding-bottom: 6px;
+}
+
+.dkey {
+  width: clamp(42px, 7.2vw, 76px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 2.6vw, 1.7rem);
+  line-height: 1;
+  box-shadow: 0 5px 0 var(--red-dark);
+  transition: transform .05s, box-shadow .05s, background-color .05s;
+}
+
+.dkey.is-down {
+  background: var(--red-dark);
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 var(--red-dark);
+}
+
+/* ---------- Petunjuk ---------- */
+[data-mode="desktop"] .hint {
+  display: block;
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: .85rem;
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 7px;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: .8rem;
+}
